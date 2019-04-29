@@ -9,10 +9,11 @@ module Recognition
   class Parser
     def parse_file(file = 'test.csv', path_to_data = 'data/cable.yml')
       result = []
-      File.readlines(file).each do |row|
+      File.foreach(file) do |row|
         line = {}
         line['mark'] = parse_mark(row, store(path_to_data)['mark'].split(' '))
-        result << line
+        line['voltage'] = parse_voltage(row) if line['mark']
+        result << [line]
       end
       result
     end
@@ -24,6 +25,11 @@ module Recognition
         return mark if row =~ /#{mark}/i
       end
       nil
+    end
+
+    def parse_voltage(row)
+      voltage = row.scan(/(\d*[,.]?\d*\s*(мкВ|мВ|В|кВ|МВ(;|.| )))/).flatten.reject { |v| v.to_f == 0 }.join
+      voltage == '' ? nil : voltage
     end
 
     def store(path_to_data)
