@@ -7,7 +7,7 @@ Bundler.require
 
 module Recognition
   class Parser
-    def parse_file(file = 'test.csv', path_to_data = 'data/cable.yml')
+    def parse_file(file = 'data/заявка.csv', path_to_data = 'data/cable.yml')
       result = []
       File.foreach(file) do |row|
         line = {}
