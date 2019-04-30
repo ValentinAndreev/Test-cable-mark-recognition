@@ -14,6 +14,7 @@ module Recognition
         line['mark'] = parse_mark(row, store(path_to_data)['mark'].split(' '))
         if line['mark']
           line['voltage'] = parse_voltage(row)
+          line['execution'] = parse_execution(row, line['mark'], store(path_to_data)['execution'].split(' '))
         end
         result << [line]
       end
@@ -24,9 +25,7 @@ module Recognition
 
     def parse_mark(row, marks)
       marks.each do |mark|
-        if row =~ /#{mark}/i
-          return mark + row.scan(/#{mark}(-\d+)?/i).flatten[0].to_s
-        end
+        return mark + row.scan(/#{mark}(-\d+)?/i).flatten[0].to_s if row =~ /#{mark}/i
       end
       nil
     end
@@ -34,6 +33,13 @@ module Recognition
     def parse_voltage(row)
       voltage = row.scan(/(\d*[,.]?\d*\s*(мкВ|мВ|В|кВ|МВ(;|.| )))/).flatten.reject { |v| v.to_f == 0 }.join
       voltage == '' ? nil : voltage
+    end
+
+    def parse_execution(row, mark, executions)
+      executions.each do |execution|
+        return row.scan(/#{mark}(-| )(#{execution})/i).flatten.last if row =~ /#{mark}(-| )#{execution}/i
+      end
+      nil
     end
 
     def store(path_to_data)
