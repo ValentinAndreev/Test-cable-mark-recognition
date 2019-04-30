@@ -15,6 +15,7 @@ module Recognition
         if line['mark']
           line['voltage'] = parse_voltage(row)
           line['execution'] = parse_execution(row, line['mark'], store(path_to_data)['execution'].split(' '))
+          line['standard'] = parse_standard(row)
         end
         result << [line]
       end
@@ -40,6 +41,10 @@ module Recognition
         return row.scan(/#{mark}(-| )(#{execution})/i).flatten.last if row =~ /#{mark}(-| )#{execution}/i
       end
       nil
+    end
+
+    def parse_standard(row)
+      row.scan(/( |,|;)((ТУ|ГОСТ)( |-)\d+.+?)( |;)/).flatten[1]
     end
 
     def store(path_to_data)
