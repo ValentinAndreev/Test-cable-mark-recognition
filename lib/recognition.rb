@@ -16,6 +16,7 @@ module Recognition
           line['voltage'] = parse_voltage(row)
           line['execution'] = parse_execution(row, line['mark'], store(path_to_data)['execution'].split(' '))
           line['standard'] = parse_standard(row)
+          line['size'] = parse_size(row, line['mark'], line['execution'])
         end
         result << [line]
       end
@@ -45,6 +46,14 @@ module Recognition
 
     def parse_standard(row)
       row.scan(/( |,|;)((ТУ|ГОСТ)( |-)\d+.+?)( |;)/).flatten[1]
+    end
+
+    def parse_size(row, mark, execution)
+      if execution
+        row.partition(mark).last.scan(/#{execution}( |-|;)(.+?)( |-|;)/).flatten[1].gsub(/\,+$/, '')
+      else
+        row.scan(/#{mark}( |-|;)(.+?)( |-|;)/i).flatten[1].gsub(/\,+$/, '')
+      end
     end
 
     def store(path_to_data)
