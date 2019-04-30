@@ -17,10 +17,11 @@ module Recognition
           line['execution'] = parse_execution(row, line['mark'], store(path_to_data)['execution'].split(' '))
           line['standard'] = parse_standard(row)
           line['size'] = parse_size(row, line['mark'], line['execution'])
+          line['colors'] = parse_colors(row, store(path_to_data)['colors'].split(' '))
         end
         result << [line]
       end
-      result
+      result.flatten
     end
 
     private
@@ -54,6 +55,14 @@ module Recognition
       else
         row.scan(/#{mark}( |-|;)(.+?)( |-|;)/i).flatten[1].gsub(/\,+$/, '')
       end
+    end
+
+    def parse_colors(row, colors)
+      result = []
+      colors.each do |color|
+        result << row.scan(/#{color}/)[0]
+      end
+      result.compact.empty? ? nil : result.compact
     end
 
     def store(path_to_data)
