@@ -33,7 +33,7 @@ module Recognition
 
     def parse_voltage(row)
       voltage = row.scan(/(\d*[,.]?\d*\s*(мкВ|мВ|В|кВ|МВ(;|.| )))/).flatten.reject { |v| v.to_f == 0 }.join
-      voltage == '' ? nil : voltage
+      voltage == '' ? nil : voltage.tr(';', '').tr(',', '.').split(' ')
     end
 
     def parse_execution(row, mark, executions)
