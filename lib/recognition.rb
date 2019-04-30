@@ -12,7 +12,9 @@ module Recognition
       File.foreach(file) do |row|
         line = {}
         line['mark'] = parse_mark(row, store(path_to_data)['mark'].split(' '))
-        line['voltage'] = parse_voltage(row) if line['mark']
+        if line['mark']
+          line['voltage'] = parse_voltage(row)
+        end
         result << [line]
       end
       result
@@ -22,7 +24,9 @@ module Recognition
 
     def parse_mark(row, marks)
       marks.each do |mark|
-        return mark if row =~ /#{mark}/i
+        if row =~ /#{mark}/i
+          return mark + row.scan(/#{mark}(-\d+)?/i).flatten[0].to_s
+        end
       end
       nil
     end

@@ -6,8 +6,8 @@ require 'recognition'
 RSpec.describe Recognition::Parser do
   let(:result) { described_class.new.parse_file('test.csv') }
   let(:marks) do
-    [[{"mark"=>nil}], [{"mark"=>"ПЭТД", "voltage"=>nil}], [{"mark"=>"ПЭТД", "voltage"=>nil}],
-    [{"mark"=>"ПЭТВ", "voltage"=>nil}], [{"mark"=>"ПуГВ", "voltage"=>nil}], [{"mark"=>"АПБ", "voltage"=>nil}],
+    [[{"mark"=>nil}], [{"mark"=>"ПЭТД-180", "voltage"=>nil}], [{"mark"=>"ПЭТД-180", "voltage"=>nil}],
+    [{"mark"=>"ПЭТВ-2", "voltage"=>nil}], [{"mark"=>"ПуГВ", "voltage"=>nil}], [{"mark"=>"АПБ", "voltage"=>nil}],
     [{"mark"=>"ПуГВ", "voltage"=>nil}], [{"mark"=>"ПуГВ", "voltage"=>"5 мВ"}], [{"mark"=>"ПуГВ", "voltage"=>"5.5 В"}],
     [{"mark"=>"ПуГВ", "voltage"=>"5,5 МВ;"}]]
   end
